@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>时钟效果</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;			
+		}
+		body{
+			background-color: red;
+		}
+		.clock{
+			width: 542px;
+			height: 542px;	
+			border-radius: 50%;		
+			position: relative;
+			opacity: .8;
+			background: url(clock.jpg) no-repeat center center #000;
+		}
+		.clock div{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+		}
+		.h{
+			background: url(hour.png) no-repeat center center;
+		}
+		.m{
+			background: url(minute.png) no-repeat center center;
+		}
+		.s{
+			background: url(second.png) no-repeat center center;
+		}
+		.clock .time{
+			text-align: center;
+			line-height: 100px;
+			color: #fff;
+			font-size: 16px;
+			font-weight: bold;
+			width: 200px;
+			height: 100px;
+			border: 1px solid red;
+			border-radius: 10px;
+			left: 50%;
+			margin-left: -100px;
+			top: 50%;
+			margin-top: -50px;	
+			transition: all ease-in 2s;	
+			opacity: 0;
+			transform: scale(0);
+		}
+		#look{
+			width: 80px;
+			height: 40px;	
+			margin-top: 20px;	
+			cursor: pointer;	
+			animation: a 2s infinite;
+		}
+		@keyframes a{
+			0%{
+				color: #f00;
+			}
+			50%{
+				color: #0f0;
+			}
+			80%{
+				color: #00f;
+			}
+			100%{
+				color: #f00;
+			}
+		}		
+	</style>
+</head>
+<body>
+
+<div id="aa" style="width: 542px; height: 542px; border: 1px solid green;opacity: 0; position: absolute; left: 50%; margin-left: -300px; transition: all ease-in 1s; border-radius: 50%;background: red;">	
+	<div class="clock">
+		<div class="h" id="hour"></div>
+		<div class="m" id="minute"></div>
+		<div class="s" id="second"></div>
+		<div class="time" id="time">
+			
+		</div>
+	</div>
+</div>
+ <div id="look">
+ 	想看时间，请点击这里哦！ 
+ </div>
+</body>
+</html>
+<script type="text/javascript">
+	var hour = document.getElementById("hour");
+	var minute = document.getElementById("minute");
+	var second = document.getElementById("second");
+	var look=document.getElementById("look");
+	var aa=document.getElementById("aa");
+	var time = document.getElementById("time");
+	look.onclick=function(){
+		aa.style.opacity="1";
+		this.innerHTML="双击取消";
+		setTimeout(function(){
+			time.style.transform="scale(1) rotate(360deg)";
+			time.style.opacity=1;
+		},1000);
+	}
+	look.ondblclick=function(){
+		aa.style.transform="scale(0) rotate(360deg)";
+		this.style.opacity="0";
+	}
+	// 初始化时间
+	var h = 0,m = 0,s = 0,ms = 0;
+	// 开始计时
+	setInterval(function(){
+		var date = new Date(); // 获取最新的时间
+		ms = date.getMilliseconds();         // 获得毫秒
+		s = date.getSeconds() + ms / 1000;   // 获得秒 例如 3.4s
+		m = date.getMinutes() + s / 60;		 // 获得分 例如 3.4m
+		h = date.getHours() % 12+ m / 60;    // 获得小时 例如 3.4h
+		//console.log(m);
+
+		//旋转角度 每秒转6度  每分钟走6度 每小时走30度
+		second.style.WebkitTransform = "rotate("+ s*6 +"deg)";
+		minute.style.WebkitTransform ="rotate(" + m*6 +"deg)";
+		hour.style.WebkitTransform = "rotate(" + h*30 +"deg)";
+		time.innerHTML="现在的时间是："+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+	},1000);
+
+</script>
